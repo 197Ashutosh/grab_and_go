@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grab &amp; Go — Next-Gen Autonomous Retail System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===================================================================
+           GRAB & GO — Next-Gen Autonomous Retail UI (Cyber-Glassmorphism)
+           =================================================================== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-deep:      #05060b;
+            --bg-surface:   #090b14;
+            --panel-bg:     rgba(13, 16, 32, 0.72);
+            --panel-border: rgba(0, 245, 212, 0.16);
+            --panel-glow:   0 8px 32px rgba(0, 0, 0, 0.65), 0 0 16px rgba(0, 245, 212, 0.08);
+            
+            --neon-cyan:    #00f5d4;
+            --neon-emerald: #00ff88;
+            --neon-purple:  #9d4edd;
+            --neon-amber:   #ffb703;
+            --neon-crimson: #ff0055;
+            
+            --text-main:    #ffffff;
+            --text-dim:     #8a94b8;
+            --text-accent:  #00f5d4;
+            
+            --font-head:    'Orbitron', system-ui, sans-serif;
+            --font-tech:    'Rajdhani', sans-serif;
+            --font-body:    'Inter', system-ui, sans-serif;
+            
+            --radius-sm:    8px;
+            --radius-md:    14px;
+            --radius-lg:    22px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-deep);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(157, 78, 221, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(0, 245, 212, 0.08) 0%, transparent 45%),
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+        }
+
+        /* ---------- Custom Futuristic Scrollbar ---------- */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 245, 212, 0.25); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); box-shadow: 0 0 10px var(--neon-cyan); }
+
+        /* ---------- Futuristic Header ---------- */
+        .header {
+            height: 72px;
+            padding: 0 2.5rem;
+            background: rgba(9, 11, 20, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--panel-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            box-shadow: 0 0 18px rgba(0, 245, 212, 0.45);
+            animation: pulseLogo 3s infinite alternate;
+        }
+
+        @keyframes pulseLogo {
+            0% { box-shadow: 0 0 12px rgba(0, 245, 212, 0.35); }
+            100% { box-shadow: 0 0 24px rgba(157, 78, 221, 0.6); }
+        }
+
+        .logo-text {
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 1.35rem;
+            letter-spacing: 1.5px;
+            background: linear-gradient(135deg, #ffffff 30%, var(--neon-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-badge {
+            font-family: var(--font-tech);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(0, 245, 212, 0.1);
+            color: var(--neon-cyan);
+            border: 1px solid rgba(0, 245, 212, 0.3);
+            letter-spacing: 1px;
+            margin-left: 0.25rem;
+        }
+
+        .header-telemetry {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .telemetry-chip {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-tech);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            padding: 0.35rem 0.9rem;
+            background: rgba(13, 16, 32, 0.6);
+            border: 1px solid var(--panel-border);
+            border-radius: 30px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--neon-cyan);
+            box-shadow: 0 0 8px var(--neon-cyan);
+            animation: blinkDot 2s infinite;
+        }
+
+        @keyframes blinkDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+
+        /* ---------- Main Grid Layout ---------- */
+        .main-content {
+            max-width: 1560px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1.25fr 0.95fr;
+            gap: 1.8rem;
+            flex: 1;
+        }
+
+        /* ---------- Glassmorphism Card Style ---------- */
+        .glass-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--panel-glow);
+            padding: 1.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, var(--neon-cyan) 50%, transparent 100%);
+            opacity: 0.7;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+
+        .panel-title {
+            font-family: var(--font-head);
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #ffffff;
+        }
+
+        .panel-title .glow-icon {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        /* ---------- Futuristic Camera Viewport ---------- */
+        .camera-viewport {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000000;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid rgba(0, 245, 212, 0.25);
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 245, 212, 0.08);
+        }
+
+        #videoElem {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        #canvasElem {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 2;
+        }
+
+        .camera-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.2rem;
+            background: radial-gradient(circle at center, rgba(13, 16, 32, 0.9) 0%, #030408 100%);
+            z-index: 3;
+        }
+
+        .placeholder-radar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px dashed rgba(0, 245, 212, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            animation: rotateRadar 12s linear infinite;
+        }
+
+        @keyframes rotateRadar {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ---------- HUD Laser Scanline Overlay ---------- */
+        .hud-scanline {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, var(--neon-cyan) 50%, transparent 100%);
+            box-shadow: 0 0 14px var(--neon-cyan);
+            z-index: 4;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .hud-scanline.active {
+            opacity: 0.85;
+            animation: scanlineSweep 2.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes scanlineSweep {
+            0%   { top: 2%; }
+            100% { top: 96%; }
+        }
+
+        /* Telemetry overlay header in video */
+        .hud-telemetry-banner {
+            position: absolute;
+            top: 10px;
+            left: 12px;
+            right: 12px;
+            padding: 5px 12px;
+            background: rgba(3, 5, 12, 0.65);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 245, 212, 0.2);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: var(--font-tech);
+            font-size: 0.78rem;
+            letter-spacing: 1px;
+            color: var(--neon-cyan);
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        /* ---------- Camera Controls ---------- */
+        .camera-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+
+        .btn-cyber {
+            font-family: var(--font-tech);
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 0.7rem 1.6rem;
+            border-radius: var(--radius-sm);
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-cyber-primary {
+            background: linear-gradient(135deg, rgba(0, 245, 212, 0.2) 0%, rgba(157, 78, 221, 0.25) 100%);
+            border: 1px solid var(--neon-cyan);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(0, 245, 212, 0.25);
+        }
+
+        .btn-cyber-primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--neon-cyan) 0%, #00b4d8 100%);
+            color: #030408;
+            box-shadow: 0 0 25px rgba(0, 245, 212, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-cyber-danger {
+            background: rgba(255, 0, 85, 0.15);
+            border: 1px solid var(--neon-crimson);
+            color: var(--neon-crimson);
+        }
+
+        .btn-cyber-danger:hover:not(:disabled) {
+            background: var(--neon-crimson);
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
+        }
+
+        .btn-cyber:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            filter: grayscale(1);
+        }
+
+        /* ---------- Active Detection Preview HUD ---------- */
+        .detected-hud {
+            margin-top: 1.25rem;
+            padding: 1rem 1.25rem;
+            background: rgba(9, 11, 22, 0.8);
+            border: 1px solid rgba(0, 245, 212, 0.2);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s;
+        }
+
+        .detected-hud.locked {
+            border-color: var(--neon-emerald);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .det-info-wrap {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .det-icon {
+            font-size: 2.2rem;
+            filter: drop-shadow(0 0 8px rgba(0, 245, 212, 0.4));
+        }
+
+        .det-name {
+            font-family: var(--font-head);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .det-meta {
+            font-family: var(--font-tech);
+            font-size: 0.85rem;
+            letter-spacing: 0.8px;
+            color: var(--text-dim);
+            margin-top: 2px;
+        }
+
+        .det-badge {
+            font-family: var(--font-tech);
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            background: rgba(0, 245, 212, 0.15);
+            color: var(--neon-cyan);
+            border: 1px solid var(--neon-cyan);
+        }
+
+        /* ---------- Futuristic Shopping Cart Panel ---------- */
+        .cart-panel {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .cart-header-status {
+            font-family: var(--font-tech);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            color: var(--neon-cyan);
+        }
+
+        .cart-items-container {
+            flex: 1;
+            overflow-y: auto;
+            max-height: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding-right: 0.5rem;
+            margin: 0.5rem 0 1rem;
+        }
+
+        .cart-card {
+            background: rgba(18, 22, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+            padding: 0.85rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            transition: all 0.25s ease;
+            animation: slideInCard 0.35s ease;
+        }
+
+        @keyframes slideInCard {
+            from { opacity: 0; transform: translateX(20px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        .cart-card:hover {
+            border-color: rgba(0, 245, 212, 0.3);
+            box-shadow: 0 0 15px rgba(0, 245, 212, 0.1);
+        }
+
+        .card-emoji {
+            font-size: 1.8rem;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-name {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-brand {
+            font-family: var(--font-tech);
+            font-size: 0.78rem;
+            color: var(--neon-cyan);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .qty-stepper {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-sm);
+            padding: 2px 4px;
+        }
+
+        .qty-btn {
+            width: 24px;
+            height: 24px;
+            background: transparent;
+            color: #ffffff;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .qty-btn:hover {
+            background: var(--neon-cyan);
+            color: #000000;
+        }
+
+        .qty-num {
+            font-family: var(--font-tech);
+            font-size: 1rem;
+            font-weight: 700;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .card-price {
+            font-family: var(--font-head);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--neon-emerald);
+            min-width: 75px;
+            text-align: right;
+        }
+
+        .card-remove {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1.1rem;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .card-remove:hover {
+            color: var(--neon-crimson);
+            background: rgba(255, 0, 85, 0.1);
+        }
+
+        .cart-empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1rem;
+            color: var(--text-dim);
+            gap: 0.75rem;
+            font-family: var(--font-tech);
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .cart-empty-state .icon {
+            font-size: 3rem;
+            opacity: 0.4;
+            animation: floatBasket 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatBasket {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-8px); }
+        }
+
+        /* Cart Footer Billing Summary */
+        .cart-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--panel-border);
+        }
+
+        .bill-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-bottom: 0.4rem;
+            font-family: var(--font-tech);
+            letter-spacing: 0.5px;
+        }
+
+        .bill-row.total-row {
+            margin-top: 0.6rem;
+            padding-top: 0.6rem;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            font-family: var(--font-head);
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .bill-row.total-row .total-val {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-emerald));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 245, 212, 0.4);
+        }
+
+        .cart-action-bar {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+        }
+
+        .btn-checkout-sweep {
+            font-family: var(--font-head);
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            padding: 0.9rem;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, var(--neon-cyan) 0%, #00b4d8 50%, var(--neon-purple) 100%);
+            color: #030408;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(0, 245, 212, 0.4);
+            transition: all 0.3s;
+        }
+
+        .btn-checkout-sweep::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transform: skewX(-25deg);
+            transition: all 0.6s;
+        }
+
+        .btn-checkout-sweep:hover::before {
+            left: 150%;
+        }
+
+        .btn-checkout-sweep:hover {
+            box-shadow: 0 0 35px rgba(0, 245, 212, 0.7);
+            transform: translateY(-2px);
+        }
+
+        /* ---------- Futuristic Product Catalog Grid ---------- */
+        .catalog-section {
+            max-width: 1560px;
+            width: 100%;
+            margin: 1rem auto 2.5rem;
+            padding: 0 2rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.2rem;
+        }
+
+        .prod-card {
+            background: rgba(13, 16, 32, 0.65);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem 1.1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .prod-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 245, 212, 0.2);
+        }
+
+        .prod-emoji-wrap {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            background: radial-gradient(circle at center, rgba(0, 245, 212, 0.08) 0%, transparent 70%);
+        }
+
+        .prod-brand {
+            font-family: var(--font-tech);
+            font-size: 0.75rem;
+            letter-spacing: 1.2px;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+        }
+
+        .prod-title {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #ffffff;
+            line-height: 1.35;
+        }
+
+        .prod-price {
+            font-family: var(--font-head);
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--neon-emerald);
+            margin-top: auto;
+        }
+
+        .btn-add-item {
+            width: 100%;
+            padding: 0.6rem;
+            border-radius: var(--radius-sm);
+            background: rgba(0, 245, 212, 0.1);
+            color: var(--neon-cyan);
+            border: 1px solid rgba(0, 245, 212, 0.3);
+            font-family: var(--font-tech);
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .btn-add-item:hover {
+            background: var(--neon-cyan);
+            color: #000000;
+            box-shadow: 0 0 15px rgba(0, 245, 212, 0.5);
+        }
+
+        /* ---------- Futuristic Toasts ---------- */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .cyber-toast {
+            background: rgba(9, 11, 22, 0.92);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--neon-cyan);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 245, 212, 0.3);
+            border-radius: var(--radius-sm);
+            padding: 0.85rem 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #ffffff;
+            font-family: var(--font-tech);
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            animation: toastIn 0.35s ease;
+        }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ---------- Responsive Breakpoints ---------- */
+        @media (max-width: 1024px) {
+            .main-content { grid-template-columns: 1fr; }
+            .header { padding: 0 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- FUTURISTIC HEADER -->
+    <header class="header">
+        <div class="logo-wrap">
+            <div class="logo-icon">⚡</div>
+            <div>
+                <span class="logo-text">GRAB &amp; GO</span>
+                <span class="logo-badge">V2 NEURAL EDGE</span>
+            </div>
+        </div>
+
+        <div class="header-telemetry">
+            <div class="telemetry-chip">
+                <div class="status-dot"></div>
+                <span id="systemStatus">AI VISION ENGINE READY</span>
+            </div>
+            <div class="telemetry-chip" style="display: none;" id="fpsChip">
+                <span>FPS: 60</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN TWO-COLUMN WORKSPACE -->
+    <main class="main-content">
+
+        <!-- LEFT: OPTICAL SCANNER VIEWPORT -->
+        <section class="glass-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">
+                    <span class="glow-icon">👁️</span> NEURAL OPTICAL SCANNER
+                </h2>
+                <div style="font-family: var(--font-tech); font-size: 0.85rem; color: var(--text-dim);">
+                    TARGET: PACKET OR BARCODE
+                </div>
+            </div>
+
+            <div class="camera-viewport" id="viewportContainer">
+                <video id="videoElem" playsinline autoplay muted></video>
+                <canvas id="canvasElem"></canvas>
+
+                <!-- Futuristic Animated HUD Laser Scanline -->
+                <div class="hud-scanline" id="hudScanline"></div>
+
+                <!-- HUD Telemetry Banner -->
+                <div class="hud-telemetry-banner" id="telemetryBanner" style="display: none;">
+                    <span>[ LIVE OPTICAL FEED • WEBRTC STREAM ]</span>
+                    <span id="hudConfidence">CONFIDENCE: --</span>
+                    <span>[ ACCEL: NVIDIA CUDA ]</span>
+                </div>
+
+                <!-- Standby Placeholder -->
+                <div class="camera-placeholder" id="camPlaceholder">
+                    <div class="placeholder-radar">⚡</div>
+                    <p style="font-family: var(--font-head); font-size: 1.1rem; letter-spacing: 1px;">OPTICAL SCANNER STANDBY</p>
+                    <p style="color: var(--text-dim); font-size: 0.9rem; max-width: 320px; text-align: center;">
+                        Activate camera to begin zero-cashier autonomous retail checkout.
+                    </p>
+                    <button class="btn-cyber btn-cyber-primary" id="btnStartCam" onclick="startCamera()">
+                        <span>⚡ INITIALIZE CAMERA</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Scanner Controls -->
+            <div class="camera-actions">
+                <button class="btn-cyber btn-cyber-danger" id="btnStopCam" onclick="stopCamera()" disabled>
+                    <span>⏹️ STOP CAMERA</span>
+                </button>
+                <button class="btn-cyber btn-cyber-primary" style="margin-left: auto;" onclick="captureSnapshot()" id="btnSnapshot" disabled>
+                    <span>📸 CAPTURE FRAME</span>
+                </button>
+            </div>
+
+            <!-- Active Target Identification Preview -->
+            <div class="detected-hud" id="detectedHud">
+                <div class="det-info-wrap">
+                    <div class="det-icon" id="detIcon">🎯</div>
+                    <div>
+                        <div class="det-name" id="detName">NO PRODUCT IN SCAN TARGET</div>
+                        <div class="det-meta" id="detMeta">Present Lays, Hide &amp; Seek, Cold Drink, or Barcode to the reticle</div>
+                    </div>
+                </div>
+                <div class="det-badge" id="detBadge">AWAITING ITEM</div>
+            </div>
+        </section>
+
+        <!-- RIGHT: LIVE DIGITAL SHOPPING CART -->
+        <section class="glass-panel cart-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">
+                    <span class="glow-icon">🛒</span> DIGITAL SMART CART
+                </h2>
+                <span class="cart-header-status" id="cartHeaderCount">0 ITEMS IDENTIFIED</span>
+            </div>
+
+            <!-- Cart Items Scroll List -->
+            <div class="cart-items-container" id="cartContainer">
+                <div class="cart-empty-state" id="cartEmptyState">
+                    <div class="icon">🛒</div>
+                    <p style="font-size: 1.1rem; color: #ffffff;">CART IS CURRENTLY EMPTY</p>
+                    <p style="font-size: 0.85rem;">Hold any grocery item in front of the camera or add from the catalog below.</p>
+                </div>
+            </div>
+
+            <!-- Cart Billing Summary -->
+            <div class="cart-footer">
+                <div class="bill-row">
+                    <span>Subtotal:</span>
+                    <span id="billSubtotal">₹0.00</span>
+                </div>
+                <div class="bill-row">
+                    <span>GST (18% Retail Tax):</span>
+                    <span id="billTax">₹0.00</span>
+                </div>
+                <div class="bill-row total-row">
+                    <span>TOTAL PAYABLE:</span>
+                    <span class="total-val" id="billTotal">₹0.00</span>
+                </div>
+
+                <div class="cart-action-bar">
+                    <button class="btn-cyber btn-cyber-danger" onclick="clearCart()" style="padding: 0.8rem;">
+                        <span>CLEAR</span>
+                    </button>
+                    <a href="/checkout" class="btn-checkout-sweep">
+                        <span>INSTANT CHECKOUT ➔</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FUTURISTIC CATALOG GRID -->
+    <section class="catalog-section">
+        <div class="glass-panel" style="padding: 1.5rem 2rem;">
+            <div class="panel-header" style="margin-bottom: 0.5rem;">
+                <h2 class="panel-title">
+                    <span class="glow-icon">⚡</span> VERIFIED RETAIL PRODUCT INVENTORY
+                </h2>
+                <span style="font-family: var(--font-tech); font-size: 0.85rem; color: var(--neon-cyan);">
+                    AUTOMATED GRAB-AND-GO SKUS
+                </span>
+            </div>
+            <div class="products-grid" id="productsGrid">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        /* ===================================================================
+           GRAB & GO — V2 Neural Optical Frontend Controller
+           =================================================================== */
+
+        let cameraStream = null;
+        let ws = null;
+        let frameIntervalId = null;
+        let cart = [];
+        let catalogProducts = [];
+
+        // Temporal Cooldowns & Confirmation State (Stops False Positives)
+        let lastCooldowns = {};
+        const COOLDOWN_MS = 3200;
+
+        let confirmedFrames = {}; // product_id -> count of consecutive detections
+        const REQUIRED_FRAMES = 2; // Must be seen in 2 consecutive frames to prevent momentary glitches
+
+        let activeDetections = [];
+        let activeBarcode = null;
+        let lastDetectionTimestamp = 0;
+
+        /* =============================================================
+           Futuristic Web Audio Feedback Generator (Zero External Files)
+           ============================================================= */
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        // 1. High-tech laser chirp when target is locked
+        function playTargetLockChirp() {
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(980, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1760, ctx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.18, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.08);
+            } catch (e) {}
+        }
+
+        // 2. Harmonic Supermarket Checkout Chime when item is auto-added
+        function playCheckoutChime() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+                [523.25, 659.25, 783.99].forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.06);
+                    gain.gain.setValueAtTime(0.2, now + idx * 0.06);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.06 + 0.22);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now + idx * 0.06);
+                    osc.stop(now + idx * 0.06 + 0.22);
+                });
+            } catch (e) {}
+        }
+
+        /* =============================================================
+           Camera & 60 FPS Viewfinder Canvas Overlay
+           ============================================================= */
+        async function startCamera() {
+            try {
+                cameraStream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: 'environment',
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    }
+                });
+
+                const video = document.getElementById('videoElem');
+                const canvas = document.getElementById('canvasElem');
+                const ctx = canvas.getContext('2d');
+
+                video.srcObject = cameraStream;
+                await video.play();
+
+                canvas.width  = video.videoWidth  || 1280;
+                canvas.height = video.videoHeight || 720;
+
+                // UI elements state
+                document.getElementById('camPlaceholder').style.display = 'none';
+                document.getElementById('videoElem').style.display = 'block';
+                document.getElementById('hudScanline').classList.add('active');
+                document.getElementById('telemetryBanner').style.display = 'flex';
+                document.getElementById('btnStartCam').disabled = true;
+                document.getElementById('btnStopCam').disabled  = false;
+                document.getElementById('btnSnapshot').disabled = false;
+
+                // 60 FPS Continuous Render Loop
+                function renderHUD() {
+                    if (!cameraStream) return;
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                    const now = Date.now();
+                    const isFresh = (now - lastDetectionTimestamp) < 1400;
+
+                    // 1. Draw Barcode Highlight if Decoded
+                    if (activeBarcode && isFresh && activeBarcode.points && activeBarcode.points.length > 0) {
+                        ctx.save();
+                        ctx.strokeStyle = '#00ff88';
+                        ctx.lineWidth = 4;
+                        ctx.shadowColor = '#00ff88';
+                        ctx.shadowBlur = 15;
+                        ctx.beginPath();
+                        const pts = activeBarcode.points;
+                        ctx.moveTo(pts[0][0], pts[0][1]);
+                        for (let i = 1; i < pts.length; i++) {
+                            ctx.lineTo(pts[i][0], pts[i][1]);
+                        }
+                        ctx.closePath();
+                        ctx.stroke();
+
+                        // Barcode badge
+                        const tag = `BARCODE SKU: ${activeBarcode.name} (₹${activeBarcode.price})`;
+                        ctx.font = 'bold 15px "Orbitron", sans-serif';
+                        const tw = ctx.measureText(tag).width + 20;
+                        ctx.fillStyle = '#00ff88';
+                        ctx.fillRect(pts[0][0], Math.max(0, pts[0][1] - 32), tw, 30);
+                        ctx.fillStyle = '#000000';
+                        ctx.fillText(tag, pts[0][0] + 10, Math.max(20, pts[0][1] - 11));
+                        ctx.restore();
+                    }
+
+                    // 2. Draw Vision-Language Neural Detection Box
+                    if (activeDetections && activeDetections.length > 0 && isFresh) {
+                        activeDetections.forEach(det => {
+                            const [x1, y1, x2, y2] = det.bbox;
+                            const w = x2 - x1;
+                            const h = y2 - y1;
+                            const conf = Math.round(det.confidence * 100);
+
+                            ctx.save();
+                            // Glow bounding box
+                            ctx.strokeStyle = '#00f5d4';
+                            ctx.lineWidth = 3;
+                            ctx.shadowColor = '#00f5d4';
+                            ctx.shadowBlur = 18;
+                            ctx.strokeRect(x1, y1, w, h);
+
+                            // Futuristic Corner Anchors
+                            const cLen = 22;
+                            ctx.strokeStyle = '#ffffff';
+                            ctx.lineWidth = 4;
+                            // Top-left
+                            ctx.beginPath(); ctx.moveTo(x1, y1 + cLen); ctx.lineTo(x1, y1); ctx.lineTo(x1 + cLen, y1); ctx.stroke();
+                            // Top-right
+                            ctx.beginPath(); ctx.moveTo(x2 - cLen, y1); ctx.lineTo(x2, y1); ctx.lineTo(x2, y1 + cLen); ctx.stroke();
+                            // Bottom-left
+                            ctx.beginPath(); ctx.moveTo(x1, y2 - cLen); ctx.lineTo(x1, y2); ctx.lineTo(x1 + cLen, y2); ctx.stroke();
+                            // Bottom-right
+                            ctx.beginPath(); ctx.moveTo(x2 - cLen, y2); ctx.lineTo(x2, y2); ctx.lineTo(x2, y2 - cLen); ctx.stroke();
+
+                            // Holographic Header Tag
+                            const headerText = `AI IDENTIFIED: [${det.brand}] ${det.name} • ₹${det.price}`;
+                            ctx.font = 'bold 14px "Orbitron", sans-serif';
+                            const tagW = ctx.measureText(headerText).width + 20;
+                            ctx.fillStyle = 'rgba(0, 245, 212, 0.95)';
+                            ctx.fillRect(x1, Math.max(0, y1 - 32), tagW, 30);
+                            ctx.fillStyle = '#030408';
+                            ctx.fillText(headerText, x1 + 10, Math.max(20, y1 - 12));
+                            ctx.restore();
+                        });
+                    }
+
+                    // 3. Central Scanner Viewfinder Reticle (Idle State)
+                    if ((!activeDetections || activeDetections.length === 0 || !isFresh) && (!activeBarcode || !isFresh)) {
+                        const rw = canvas.width * 0.60;
+                        const rh = canvas.height * 0.70;
+                        const rx = (canvas.width - rw) / 2;
+                        const ry = (canvas.height - rh) / 2;
+
+                        ctx.save();
+                        // Dashed scanner bounds
+                        ctx.strokeStyle = 'rgba(0, 245, 212, 0.25)';
+                        ctx.lineWidth = 2;
+                        ctx.setLineDash([10, 10]);
+                        ctx.strokeRect(rx, ry, rw, rh);
+                        ctx.setLineDash([]);
+
+                        // Animated Corner Brackets
+                        const cSize = 28;
+                        ctx.strokeStyle = '#00f5d4';
+                        ctx.lineWidth = 4;
+                        ctx.shadowColor = '#00f5d4';
+                        ctx.shadowBlur = 10;
+                        // TL
+                        ctx.beginPath(); ctx.moveTo(rx, ry + cSize); ctx.lineTo(rx, ry); ctx.lineTo(rx + cSize, ry); ctx.stroke();
+                        // TR
+                        ctx.beginPath(); ctx.moveTo(rx + rw - cSize, ry); ctx.lineTo(rx + rw, ry); ctx.lineTo(rx + rw, ry + cSize); ctx.stroke();
+                        // BL
+                        ctx.beginPath(); ctx.moveTo(rx, ry + rh - cSize); ctx.lineTo(rx, ry + rh); ctx.lineTo(rx + cSize, ry + rh); ctx.stroke();
+                        // BR
+                        ctx.beginPath(); ctx.moveTo(rx + rw - cSize, ry + rh); ctx.lineTo(rx + rw, ry + rh); ctx.lineTo(rx + rw, ry + rh - cSize); ctx.stroke();
+
+                        // Viewfinder Text Prompt
+                        const prompt = '⚡ PRESENT ITEM OR BARCODE IN TARGET RETICLE';
+                        ctx.font = '700 14px "Rajdhani", sans-serif';
+                        const pw = ctx.measureText(prompt).width;
+                        ctx.fillStyle = 'rgba(5, 6, 12, 0.75)';
+                        ctx.fillRect((canvas.width - pw - 24) / 2, ry + rh - 40, pw + 24, 30);
+                        ctx.fillStyle = '#00f5d4';
+                        ctx.fillText(prompt, (canvas.width - pw) / 2, ry + rh - 20);
+                        ctx.restore();
+                    }
+
+                    requestAnimationFrame(renderHUD);
+                }
+                renderHUD();
+
+                // Connect WebSocket
+                connectWebSocket();
+
+                // Send frames every 300ms
+                frameIntervalId = setInterval(() => sendFrame(canvas), 300);
+
+                showToast('AI Optical Scanner Initialized', 'success');
+            } catch (err) {
+                console.error('Camera init error:', err);
+                showToast('Camera Permission Denied or Unavailable', 'error');
+            }
+        }
+
+        function stopCamera() {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(t => t.stop());
+                cameraStream = null;
+            }
+            if (frameIntervalId) {
+                clearInterval(frameIntervalId);
+                frameIntervalId = null;
+            }
+            if (ws) {
+                ws.close();
+                ws = null;
+            }
+
+            activeDetections = [];
+            activeBarcode = null;
+
+            document.getElementById('videoElem').style.display = 'none';
+            document.getElementById('hudScanline').classList.remove('active');
+            document.getElementById('telemetryBanner').style.display = 'none';
+            document.getElementById('camPlaceholder').style.display = 'flex';
+            document.getElementById('btnStartCam').disabled = false;
+            document.getElementById('btnStopCam').disabled  = true;
+            document.getElementById('btnSnapshot').disabled = true;
+
+            const canvas = document.getElementById('canvasElem');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            showToast('Camera Deactivated', 'info');
+        }
+
+        function captureSnapshot() {
+            const canvas = document.getElementById('canvasElem');
+            const link = document.createElement('a');
+            link.download = `grab_and_go_scan_${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            showToast('Snapshot Saved', 'success');
+        }
+
+        /* =============================================================
+           WebSocket & Zero-Shot Detection Stream
+           ============================================================= */
+        function connectWebSocket() {
+            const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+            ws = new WebSocket(`${proto}://${location.host}/ws/detect`);
+
+            ws.onopen = () => {
+                console.log('[WS] Connected to AI Neural Engine');
+            };
+
+            ws.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    handleDetectionResult(data);
+                } catch (e) {
+                    console.error('WS Parse Error:', e);
+                }
+            };
+
+            ws.onclose = () => {
+                if (cameraStream) {
+                    setTimeout(() => { if (cameraStream) connectWebSocket(); }, 2000);
+                }
+            };
+        }
+
+        function sendFrame(canvas) {
+            if (!ws || ws.readyState !== WebSocket.OPEN) return;
+            try {
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.65);
+                ws.send(dataUrl);
+            } catch (e) {}
+        }
+
+        /* =============================================================
+           Robust Anti-Glitch Detection & Auto-Add Logic
+           ============================================================= */
+        function handleDetectionResult(data) {
+            activeDetections = data.detections || [];
+            activeBarcode = data.barcode || null;
+            lastDetectionTimestamp = Date.now();
+
+            const hud = document.getElementById('detectedHud');
+            const hudIcon = document.getElementById('detIcon');
+            const hudName = document.getElementById('detName');
+            const hudMeta = document.getElementById('detMeta');
+            const hudBadge = document.getElementById('detBadge');
+            const confEl = document.getElementById('hudConfidence');
+
+            // 1. High Priority: Barcode Ground Truth Decoded
+            if (activeBarcode && activeBarcode.product_id) {
+                const pid = activeBarcode.product_id;
+                hud.classList.add('locked');
+                hudIcon.textContent = activeBarcode.emoji || '🏷️';
+                hudName.textContent = activeBarcode.name;
+                hudMeta.textContent = `VERIFIED SKU • EAN: ${activeBarcode.code}`;
+                hudBadge.textContent = '100% BARCODE MATCH';
+                confEl.textContent = 'CONFIDENCE: 100%';
+
+                const now = Date.now();
+                if (now - (lastCooldowns[pid] || 0) > COOLDOWN_MS) {
+                    lastCooldowns[pid] = now;
+                    addToCart(pid, true);
+                    playCheckoutChime();
+                    showToast(`🛒 Verified: ${activeBarcode.name} added!`, 'success');
+                }
+                return;
+            }
+
+            // 2. Vision-Language Neural Detection (Active Item in View)
+            if (activeDetections.length > 0) {
+                const top = activeDetections[0];
+                const pid = top.product_id;
+                const confPercent = Math.round(top.confidence * 100);
+
+                hud.classList.add('locked');
+                hudIcon.textContent = top.emoji || '📦';
+                hudName.textContent = top.name;
+                hudMeta.textContent = `BRAND: ${top.brand} • CATEGORY: ${top.category} • ₹${top.price}`;
+                hudBadge.textContent = `${confPercent}% VLM MATCH`;
+                confEl.textContent = `CONFIDENCE: ${confPercent}%`;
+
+                // Play target lock chirp
+                playTargetLockChirp();
+
+                // Frame Confirmation Counter (Requires 2 consecutive frames to prevent glitches)
+                confirmedFrames[pid] = (confirmedFrames[pid] || 0) + 1;
+
+                if (confirmedFrames[pid] >= REQUIRED_FRAMES) {
+                    const now = Date.now();
+                    if (now - (lastCooldowns[pid] || 0) > COOLDOWN_MS) {
+                        lastCooldowns[pid] = now;
+                        confirmedFrames[pid] = 0;
+                        addToCart(pid, true);
+                        playCheckoutChime();
+                        showToast(`⚡ AI Auto-Detected: ${top.name} added!`, 'success');
+                    }
+                }
+            } else {
+                // No item or background
+                hud.classList.remove('locked');
+                hudIcon.textContent = '🎯';
+                hudName.textContent = 'NO PRODUCT IN SCAN TARGET';
+                hudMeta.textContent = 'Present Lays, Hide & Seek, Cold Drink, or Barcode to the reticle';
+                hudBadge.textContent = 'AWAITING ITEM';
+                confEl.textContent = 'CONFIDENCE: --';
+                confirmedFrames = {};
+            }
+        }
+
+        /* =============================================================
+           Shopping Cart CRUD Operations
+           ============================================================= */
+        async function fetchCart() {
+            try {
+                const res = await fetch('/api/cart');
+                const data = await res.json();
+                cart = data.items || [];
+                renderCart();
+            } catch (e) {}
+        }
+
+        async function addToCart(productId, silent = false) {
+            try {
+                const res = await fetch('/api/cart/add', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ product_id: productId, quantity: 1 })
+                });
+                const data = await res.json();
+                cart = (data.cart && data.cart.items) ? data.cart.items : (data.items || []);
+                renderCart();
+                if (!silent) {
+                    const prod = catalogProducts.find(p => p.id === productId);
+                    playCheckoutChime();
+                    showToast(`Added ${prod ? prod.name : 'Item'} to cart`, 'success');
+                }
+            } catch (e) {
+                showToast('Failed to add item', 'error');
+            }
+        }
+
+        async function updateQty(productId, delta) {
+            try {
+                const res = await fetch('/api/cart/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ product_id: productId, quantity_delta: delta })
+                });
+                const data = await res.json();
+                cart = (data.cart && data.cart.items) ? data.cart.items : (data.items || []);
+                renderCart();
+            } catch (e) {}
+        }
+
+        async function removeFromCart(productId) {
+            try {
+                const res = await fetch('/api/cart/remove', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ product_id: productId })
+                });
+                const data = await res.json();
+                cart = (data.cart && data.cart.items) ? data.cart.items : (data.items || []);
+                renderCart();
+                showToast('Item removed', 'info');
+            } catch (e) {}
+        }
+
+        async function clearCart() {
+            try {
+                const res = await fetch('/api/cart/clear', { method: 'POST' });
+                cart = [];
+                renderCart();
+                showToast('Cart Cleared', 'info');
+            } catch (e) {}
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartContainer');
+            const countLabel = document.getElementById('cartHeaderCount');
+            const subtotalEl = document.getElementById('billSubtotal');
+            const taxEl = document.getElementById('billTax');
+            const totalEl = document.getElementById('billTotal');
+
+            if (!cart || cart.length === 0) {
+                container.innerHTML = `
+                    <div class="cart-empty-state">
+                        <div class="icon">🛒</div>
+                        <p style="font-size: 1.1rem; color: #ffffff;">CART IS CURRENTLY EMPTY</p>
+                        <p style="font-size: 0.85rem;">Hold any grocery item in front of the camera or add from the catalog below.</p>
+                    </div>
+                `;
+                countLabel.textContent = '0 ITEMS IDENTIFIED';
+                subtotalEl.textContent = '₹0.00';
+                taxEl.textContent = '₹0.00';
+                totalEl.textContent = '₹0.00';
+                return;
+            }
+
+            const totalItems = cart.reduce((s, i) => s + (i.quantity || 1), 0);
+            const subtotal = cart.reduce((s, i) => s + (i.price * (i.quantity || 1)), 0);
+            const tax = subtotal * 0.18;
+            const grandTotal = subtotal + tax;
+
+            countLabel.textContent = `${totalItems} ITEM${totalItems > 1 ? 'S' : ''} IDENTIFIED`;
+            subtotalEl.textContent = `₹${subtotal.toFixed(2)}`;
+            taxEl.textContent = `₹${tax.toFixed(2)}`;
+            totalEl.textContent = `₹${grandTotal.toFixed(2)}`;
+
+            container.innerHTML = cart.map(item => `
+                <div class="cart-card">
+                    <div class="card-emoji">${item.emoji || '📦'}</div>
+                    <div class="card-info">
+                        <div class="card-name">${item.name}</div>
+                        <div class="card-brand">${item.brand} • ₹${item.price}</div>
+                    </div>
+                    <div class="qty-stepper">
+                        <button class="qty-btn" onclick="updateQty('${item.product_id}', -1)">−</button>
+                        <span class="qty-num">${item.quantity || 1}</span>
+                        <button class="qty-btn" onclick="updateQty('${item.product_id}', 1)">+</button>
+                    </div>
+                    <div class="card-price">₹${(item.price * (item.quantity || 1)).toFixed(2)}</div>
+                    <button class="card-remove" onclick="removeFromCart('${item.product_id}')" title="Remove">✕</button>
+                </div>
+            `).join('');
+        }
+
+        /* =============================================================
+           Product Catalog Grid
+           ============================================================= */
+        async function loadCatalog() {
+            try {
+                const res = await fetch('/api/products');
+                catalogProducts = await res.json();
+                renderCatalog();
+            } catch (e) {
+                console.error('Catalog load error:', e);
+            }
+        }
+
+        function renderCatalog() {
+            const grid = document.getElementById('productsGrid');
+            if (!catalogProducts || catalogProducts.length === 0) return;
+
+            grid.innerHTML = catalogProducts.map(p => `
+                <div class="prod-card">
+                    <div class="prod-emoji-wrap">${p.emoji || '📦'}</div>
+                    <div class="prod-brand">${p.brand}</div>
+                    <div class="prod-title">${p.name}</div>
+                    <div class="prod-price">₹${Number(p.price).toFixed(2)}</div>
+                    <button class="btn-add-item" onclick="addToCart('${p.id}')">
+                        + ADD TO BASKET
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        /* =============================================================
+           Futuristic Toast Alerts
+           ============================================================= */
+        function showToast(msg, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'cyber-toast';
+            const icon = type === 'success' ? '⚡' : (type === 'error' ? '❌' : 'ℹ️');
+            toast.innerHTML = `<span style="color:var(--neon-cyan);">${icon}</span><span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(15px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        /* =============================================================
+           Init
+           ============================================================= */
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCatalog();
+            fetchCart();
+        });
+    </script>
+</body>
+</html>

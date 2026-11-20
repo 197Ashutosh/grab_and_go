@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grab &amp; Go — Autonomous Settlement Confirmed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-deep:      #05060b;
+            --panel-bg:     rgba(13, 16, 32, 0.85);
+            --panel-border: rgba(0, 245, 212, 0.25);
+            --neon-cyan:    #00f5d4;
+            --neon-emerald: #00ff88;
+            --neon-purple:  #9d4edd;
+            --text-main:    #ffffff;
+            --text-dim:     #8a94b8;
+            --font-head:    'Orbitron', system-ui, sans-serif;
+            --font-tech:    'Rajdhani', sans-serif;
+            --font-body:    'Inter', system-ui, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-deep);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at center, rgba(0, 245, 212, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 80% 20%, rgba(157, 78, 221, 0.1) 0%, transparent 50%);
+        }
+
+        .receipt-card {
+            max-width: 540px;
+            width: 100%;
+            background: var(--panel-bg);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--panel-border);
+            border-radius: 24px;
+            padding: 3rem 2.5rem;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 245, 212, 0.2);
+            position: relative;
+            z-index: 2;
+            animation: cardAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cardAppear {
+            from { opacity: 0; transform: scale(0.9) translateY(30px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .checkmark-wrap {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-emerald));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            color: #030408;
+            box-shadow: 0 0 35px rgba(0, 255, 136, 0.6);
+            animation: checkGlow 2s infinite alternate;
+        }
+
+        @keyframes checkGlow {
+            from { box-shadow: 0 0 25px rgba(0, 255, 136, 0.5); }
+            to   { box-shadow: 0 0 45px rgba(0, 245, 212, 0.8); }
+        }
+
+        .success-title {
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #ffffff;
+            margin-bottom: 0.4rem;
+        }
+
+        .order-id-badge {
+            display: inline-block;
+            font-family: var(--font-tech);
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 4px 14px;
+            background: rgba(0, 245, 212, 0.1);
+            color: var(--neon-cyan);
+            border: 1px solid var(--panel-border);
+            border-radius: 20px;
+            margin-bottom: 1.75rem;
+        }
+
+        .receipt-breakdown {
+            background: rgba(5, 6, 12, 0.7);
+            border: 1px dashed rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            margin-bottom: 2rem;
+            font-family: var(--font-tech);
+            font-size: 0.95rem;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.8px;
+        }
+
+        .receipt-row.total {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: var(--font-head);
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .total-number {
+            color: var(--neon-emerald);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-shop-again {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--neon-cyan), #00b4d8);
+            color: #030408;
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 0.95rem;
+            letter-spacing: 1.5px;
+            text-decoration: none;
+            box-shadow: 0 0 25px rgba(0, 245, 212, 0.4);
+            transition: all 0.3s;
+        }
+
+        .btn-shop-again:hover {
+            box-shadow: 0 0 40px rgba(0, 245, 212, 0.8);
+            transform: translateY(-2px);
+        }
+
+        /* Confetti Canvas */
+        #confettiCanvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confettiCanvas"></canvas>
+
+    <div class="receipt-card">
+        <div class="checkmark-wrap">✓</div>
+        <h1 class="success-title">SETTLEMENT CONFIRMED</h1>
+        <div class="order-id-badge" id="orderIdBadge">ORDER ORD-XXXXXX</div>
+
+        <div class="receipt-breakdown">
+            <div class="receipt-row">
+                <span>GATEWAY</span>
+                <span id="receiptMethod">INSTANT UPI</span>
+            </div>
+            <div class="receipt-row">
+                <span>TIMESTAMP</span>
+                <span id="receiptDate">--</span>
+            </div>
+            <div class="receipt-row">
+                <span>SECURITY CLEARANCE</span>
+                <span style="color:var(--neon-emerald);">AUTONOMOUS ZERO-CASHIER</span>
+            </div>
+            <div class="receipt-row total">
+                <span>SETTLED AMOUNT:</span>
+                <span class="total-number" id="receiptTotal">₹0.00</span>
+            </div>
+        </div>
+
+        <a href="/" class="btn-shop-again">
+            <span>START NEW SHOPPING SESSION ➔</span>
+        </a>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const orderId = params.get('order_id') || ('ORD-' + Date.now().toString(36).toUpperCase());
+        const total = parseFloat(params.get('total')) || 0;
+        const method = params.get('method') || 'UPI';
+
+        document.getElementById('orderIdBadge').textContent = `ORDER ID: ${orderId}`;
+        document.getElementById('receiptTotal').textContent = `₹${total.toFixed(2)}`;
+        document.getElementById('receiptMethod').textContent = method.toUpperCase();
+        document.getElementById('receiptDate').textContent = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        // Futuristic Confetti Generator
+        function fireConfetti() {
+            const canvas = document.getElementById('confettiCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#00f5d4', '#00ff88', '#9d4edd', '#ffffff', '#ffb703'];
+
+            for (let i = 0; i < 90; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    size: Math.random() * 6 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speedY: Math.random() * 3 + 2,
+                    speedX: (Math.random() - 0.5) * 2,
+                    rot: Math.random() * 360,
+                    rotSpeed: (Math.random() - 0.5) * 4
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+                    p.rot += p.rotSpeed;
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.rot * Math.PI) / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.restore();
+                });
+
+                if (particles.some(p => p.y < canvas.height)) {
+                    requestAnimationFrame(animate);
+                }
+            }
+            animate();
+        }
+
+        document.addEventListener('DOMContentLoaded', fireConfetti);
+    </script>
+</body>
+</html>

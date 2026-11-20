@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grab &amp; Go — Instant Autonomous Settlement</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-deep:      #05060b;
+            --panel-bg:     rgba(13, 16, 32, 0.75);
+            --panel-border: rgba(0, 245, 212, 0.16);
+            --neon-cyan:    #00f5d4;
+            --neon-emerald: #00ff88;
+            --neon-purple:  #9d4edd;
+            --neon-crimson: #ff0055;
+            --text-main:    #ffffff;
+            --text-dim:     #8a94b8;
+            --font-head:    'Orbitron', system-ui, sans-serif;
+            --font-tech:    'Rajdhani', sans-serif;
+            --font-body:    'Inter', system-ui, sans-serif;
+            --radius-md:    16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-deep);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(157, 78, 221, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(0, 245, 212, 0.08) 0%, transparent 45%),
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+        }
+
+        .header {
+            height: 72px;
+            padding: 0 2.5rem;
+            background: rgba(9, 11, 20, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--panel-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-wrap { display: flex; align-items: center; gap: 0.8rem; }
+        .logo-text {
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 1.3rem;
+            letter-spacing: 1.5px;
+            background: linear-gradient(135deg, #ffffff, var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-link {
+            font-family: var(--font-tech);
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--neon-cyan);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.25s;
+        }
+        .back-link:hover { text-shadow: 0 0 10px var(--neon-cyan); }
+
+        .checkout-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            flex: 1;
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 245, 212, 0.08);
+            position: relative;
+        }
+
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+        }
+
+        .panel-title {
+            font-family: var(--font-head);
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #ffffff;
+        }
+
+        .order-items {
+            max-height: 380px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding-right: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .order-card {
+            background: rgba(18, 22, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 0.85rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .order-card-emoji { font-size: 1.8rem; }
+        .order-card-info { flex: 1; }
+        .order-card-name { font-weight: 600; font-size: 0.95rem; }
+        .order-card-brand { font-family: var(--font-tech); font-size: 0.8rem; color: var(--neon-cyan); letter-spacing: 0.8px; }
+        .order-card-qty { font-family: var(--font-tech); font-size: 0.95rem; color: var(--text-dim); }
+        .order-card-price { font-family: var(--font-head); font-weight: 700; color: var(--neon-emerald); }
+
+        .bill-calc {
+            border-top: 1px solid var(--panel-border);
+            padding-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-family: var(--font-tech);
+            font-size: 0.95rem;
+        }
+
+        .calc-row { display: flex; justify-content: space-between; color: var(--text-dim); }
+        .calc-row.grand-total {
+            font-family: var(--font-head);
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px dashed rgba(255, 255, 255, 0.15);
+        }
+        .grand-total-val { color: var(--neon-emerald); text-shadow: 0 0 10px rgba(0, 255, 136, 0.4); }
+
+        /* Payment Selection */
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .method-tab {
+            background: rgba(18, 22, 42, 0.7);
+            border: 1px solid var(--panel-border);
+            border-radius: 10px;
+            padding: 0.9rem 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .method-tab.active {
+            border-color: var(--neon-cyan);
+            background: rgba(0, 245, 212, 0.1);
+            box-shadow: 0 0 15px rgba(0, 245, 212, 0.25);
+        }
+
+        .method-tab .icon { font-size: 1.5rem; }
+        .method-tab .label { font-family: var(--font-tech); font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; }
+
+        .method-form { display: none; }
+        .method-form.active { display: block; animation: fadeIn 0.3s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* QR Code Simulation */
+        .upi-box {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(5, 6, 12, 0.8);
+            border: 1px dashed var(--neon-cyan);
+            border-radius: 12px;
+            margin-bottom: 1.2rem;
+        }
+
+        .upi-qr-frame {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 1rem;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-family: var(--font-tech);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+            margin-bottom: 0.4rem;
+        }
+
+        .cyber-input {
+            width: 100%;
+            background: rgba(18, 22, 42, 0.7);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: #ffffff;
+            font-family: var(--font-tech);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.25s;
+        }
+
+        .cyber-input:focus {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 12px rgba(0, 245, 212, 0.3);
+        }
+
+        .btn-pay-now {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 1.25rem;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-emerald));
+            color: #030408;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 1rem;
+            letter-spacing: 1.5px;
+            box-shadow: 0 0 25px rgba(0, 245, 212, 0.4);
+            transition: all 0.3s;
+        }
+
+        .btn-pay-now:hover {
+            box-shadow: 0 0 35px rgba(0, 245, 212, 0.7);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 900px) {
+            .checkout-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo-wrap">
+            <span style="font-size:1.6rem;">⚡</span>
+            <span class="logo-text">GRAB &amp; GO</span>
+        </div>
+        <a href="/" class="back-link">
+            <span>← RETURN TO SCANNER</span>
+        </a>
+    </header>
+
+    <main class="checkout-container">
+        <!-- ORDER SUMMARY -->
+        <section class="panel">
+            <h2 class="panel-title">
+                <span style="color:var(--neon-cyan);">📋</span> IDENTIFIED ITEMS SUMMARY
+            </h2>
+
+            <div class="order-items" id="orderItems">
+                <!-- Injected via JS -->
+            </div>
+
+            <div class="bill-calc">
+                <div class="calc-row">
+                    <span>Subtotal</span>
+                    <span id="calcSubtotal">₹0.00</span>
+                </div>
+                <div class="calc-row">
+                    <span>GST (18% Retail Tax)</span>
+                    <span id="calcTax">₹0.00</span>
+                </div>
+                <div class="calc-row grand-total">
+                    <span>TOTAL SETTLEMENT:</span>
+                    <span class="grand-total-val" id="calcGrandTotal">₹0.00</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAYMENT SETTLEMENT -->
+        <section class="panel">
+            <h2 class="panel-title">
+                <span style="color:var(--neon-emerald);">💳</span> AUTONOMOUS SETTLEMENT
+            </h2>
+
+            <div class="methods-grid">
+                <div class="method-tab active" data-method="upi" onclick="switchMethod('upi')">
+                    <span class="icon">📱</span>
+                    <span class="label">UPI / QR</span>
+                </div>
+                <div class="method-tab" data-method="card" onclick="switchMethod('card')">
+                    <span class="icon">💳</span>
+                    <span class="label">CARD</span>
+                </div>
+                <div class="method-tab" data-method="cod" onclick="switchMethod('cod')">
+                    <span class="icon">💵</span>
+                    <span class="label">CASH</span>
+                </div>
+            </div>
+
+            <!-- UPI Form -->
+            <div class="method-form active" id="form-upi">
+                <div class="upi-box">
+                    <div class="upi-qr-frame">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=upi://pay?pa=grabandgo@retail&pn=GrabAndGoAutonomous&cu=INR" alt="UPI QR Code" style="width:100%; height:100%; object-fit:contain;">
+                    </div>
+                    <p style="font-family:var(--font-tech); font-size:0.9rem; color:var(--neon-cyan);">SCAN WITH GPAY / PHONEPE / PAYTM</p>
+                </div>
+                <div class="form-group">
+                    <label>OR ENTER UPI VPA ID</label>
+                    <input type="text" class="cyber-input" id="upiId" placeholder="e.g. yourname@oksbi" value="customer@okaxis">
+                </div>
+            </div>
+
+            <!-- Card Form -->
+            <div class="method-form" id="form-card">
+                <div class="form-group">
+                    <label>CARD NUMBER</label>
+                    <input type="text" class="cyber-input" id="cardNum" placeholder="4532 •••• •••• 8892" value="4532 8891 0023 9912">
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
+                    <div class="form-group">
+                        <label>EXPIRY</label>
+                        <input type="text" class="cyber-input" id="cardExp" placeholder="MM/YY" value="09/28">
+                    </div>
+                    <div class="form-group">
+                        <label>CVV / CVC</label>
+                        <input type="password" class="cyber-input" id="cardCvv" placeholder="•••" value="782">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cash Form -->
+            <div class="method-form" id="form-cod">
+                <div style="text-align:center; padding: 2rem 1rem;">
+                    <div style="font-size:3rem; margin-bottom:0.75rem;">💵</div>
+                    <p style="font-family:var(--font-tech); font-size:1.1rem; color:#ffffff;">AUTONOMOUS CASH ON DEPARTURE</p>
+                    <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.4rem;">
+                        Verify order at smart gate kiosk upon exit.
+                    </p>
+                </div>
+            </div>
+
+            <button class="btn-pay-now" onclick="executePayment()">
+                <span>CONFIRM &amp; AUTHORIZE PAYMENT</span>
+            </button>
+        </section>
+    </main>
+
+    <script>
+        let cartItems = [];
+        let grandTotalVal = 0;
+        let selectedMethod = 'upi';
+
+        function switchMethod(method) {
+            selectedMethod = method;
+            document.querySelectorAll('.method-tab').forEach(t => {
+                t.classList.toggle('active', t.dataset.method === method);
+            });
+            document.querySelectorAll('.method-form').forEach(f => {
+                f.classList.toggle('active', f.id === `form-${method}`);
+            });
+        }
+
+        async function loadCart() {
+            try {
+                const res = await fetch('/api/cart');
+                const data = await res.json();
+                cartItems = data.items || [];
+                renderOrder();
+            } catch (e) {}
+        }
+
+        function renderOrder() {
+            const list = document.getElementById('orderItems');
+            if (!cartItems || cartItems.length === 0) {
+                list.innerHTML = `<p style="color:var(--text-dim); text-align:center; padding:2rem;">No items identified. <a href="/" style="color:var(--neon-cyan);">Return to scanner</a></p>`;
+                return;
+            }
+
+            const subtotal = cartItems.reduce((s, i) => s + i.price * (i.quantity || 1), 0);
+            const tax = subtotal * 0.18;
+            grandTotalVal = subtotal + tax;
+
+            list.innerHTML = cartItems.map(item => `
+                <div class="order-card">
+                    <div class="order-card-emoji">${item.emoji || '📦'}</div>
+                    <div class="order-card-info">
+                        <div class="order-card-name">${item.name}</div>
+                        <div class="order-card-brand">${item.brand}</div>
+                    </div>
+                    <div class="order-card-qty">×${item.quantity || 1}</div>
+                    <div class="order-card-price">₹${(item.price * (item.quantity || 1)).toFixed(2)}</div>
+                </div>
+            `).join('');
+
+            document.getElementById('calcSubtotal').textContent = `₹${subtotal.toFixed(2)}`;
+            document.getElementById('calcTax').textContent = `₹${tax.toFixed(2)}`;
+            document.getElementById('calcGrandTotal').textContent = `₹${grandTotalVal.toFixed(2)}`;
+        }
+
+        async function executePayment() {
+            if (!cartItems || cartItems.length === 0) {
+                alert('Cart is empty!');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/checkout', { method: 'POST' });
+                const data = await res.json();
+                const orderId = data.order_id || ('ORD-' + Date.now().toString(36).toUpperCase());
+                window.location.href = `/payment-success?order_id=${orderId}&total=${grandTotalVal.toFixed(2)}&method=${selectedMethod}`;
+            } catch (e) {
+                alert('Payment processing failed. Please retry.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadCart);
+    </script>
+</body>
+</html>
